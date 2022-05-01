@@ -1,0 +1,22 @@
+{% extends 'templates/base.html' %}
+{% block title %}
+All
+{% endblock  %}
+
+{% block content %}
+<div class="wrapper">
+  <div class="store">
+    <div class="storeItem">
+      <div class="itemInfo">
+        {% for product in products %}
+        <p><a href="{{ product.get_absolute_url }}">{{product.name}}</a></p>
+        <a href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}" width="200px" height="200px" style="border-radius: 20px">
+        </a>
+        <hr>
+        {% endfor %}
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

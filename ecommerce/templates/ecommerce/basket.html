@@ -1,0 +1,29 @@
+{% extends 'templates/base.html' %}
+
+{% block title %}
+Basket
+{% endblock %}
+
+{% block content %}
+<h4>Basket</h4>
+
+<div class="wrapper">
+  <div class="store">
+    <div class="storeItem">
+      <div class="itemInfo">
+        {% for item in basket %}
+          {% with product=item.product %}
+        <p><a href="{{ product.get_absolute_url }}">{{product.name}}</a></p>
+          <p>QTY: {{ item.qty }}</p>
+          <p>subprice: {{ item.total_price }}</p>
+        <a href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}" width="200px" height="200px" style="border-radius: 20px">
+        </a>
+        <hr>
+          {% endwith %}
+        {% endfor %}
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ecommerce{% endblock %}</title>
+</head>
+<body>
+<h1><a href="{% url 'core:home' %}">Home</a></h1>
+<p><a href="{% url 'core:all' %}">All</a></p>
+<div id="basket-summary"><p><a href="{% url 'basket:basket_summary' %}">Basket</a>
+    <p> total: {% with total_qty=basket|length %}
+    {% if total_qty > 0 %}
+    {{basket|length}}
+    {% else %}
+    0
+    {% endif %}
+    {% endwith %}
+    </p></div>
+{% block content %}
+
+
+{% endblock %}
+</body>
+</html>
