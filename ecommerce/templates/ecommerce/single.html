@@ -25,7 +25,7 @@
             object_to_change.innerHTML = data['qty'];
                 };
 
-        xhr.open("POST", "{% url 'basket:add'%}");
+        xhr.open("POST", "{% url 'basket:add' %}");
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
         xhr.send('qty=1&productid={{product.id}}&csrfmiddlewaretoken={{csrf_token}}')
     })

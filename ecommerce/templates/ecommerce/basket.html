@@ -10,20 +10,84 @@ Basket
 <div class="wrapper">
   <div class="store">
     <div class="storeItem">
-      <div class="itemInfo">
-        {% for item in basket %}
+      {% for item in basket %}
           {% with product=item.product %}
+      <div class="itemInfo" id="item{{product.id}}">
         <p><a href="{{ product.get_absolute_url }}">{{product.name}}</a></p>
-          <p>QTY: {{ item.qty }}</p>
-          <p>subprice: {{ item.total_price }}</p>
+          <p>QTY: </p>
+          <input id="select{{ product.id }}" type="number" value="{{ item.qty }}">
+          <button type="button" class="update-button" value="{{ product.id }}">Submit</button>
+          <button type="button" class="delete-button" value="{{ product.id }}">delete</button>
+           <p>price: {{ item.price }}</p>
         <a href="{{ product.get_absolute_url }}">
           <img src="{{ product.image.url }}" width="200px" height="200px" style="border-radius: 20px">
         </a>
         <hr>
-          {% endwith %}
-        {% endfor %}
+
+</div>
+      {% endwith %}
+      {% endfor %}
+       <p>subprice: <div id="subprice">{{ basket.get_total_price }}</div></p>
 </div>
 </div>
 </div>
-</div>
+<script>
+    let update_buttons = document.getElementsByClassName('update-button');
+    console.log(update_buttons);
+        for (var i = 0; i < update_buttons.length; i++) {
+      var productid = update_buttons[i].value;
+      update_buttons[i].addEventListener("click", function(e){
+      console.log(productid)
+      var productqty = document.getElementById('select' + productid).value;
+      console.log(productqty)
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(response) {
+            var total_qty = document.getElementById("total-qty");
+            var subprice = document.getElementById("subprice");
+            console.log(response);
+            console.log(response.srcElement.response);
+            let data = JSON.parse(response.srcElement.response);
+
+            let item_subprice = data["subtotal"];
+            let basketqty = data["basketqty"];
+            subprice.innerHTML = item_subprice;
+            total_qty.innerHTML = basketqty
+                };
+
+        xhr.open("POST", "{% url 'basket:update'%}");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xhr.send(`qty=${productqty}&productid=${productid}&csrfmiddlewaretoken={{csrf_token}}`)
+    });
+    }
+
+     let delete_buttons = document.getElementsByClassName('delete-button');
+    console.log(delete_buttons);
+        for (var i = 0; i < delete_buttons.length; i++) {
+      let productid = delete_buttons[i].value;
+      delete_buttons[i].addEventListener("click", function(e){
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(response) {
+            var total_qty = document.getElementById("total-qty");
+            var subprice = document.getElementById("subprice");
+            var object_to_remove = document.getElementById("item" + productid);
+            console.log(response);
+            console.log(response.srcElement.response);
+            let data = JSON.parse(response.srcElement.response);
+            let item_subprice = data["subtotal"];
+            let basketqty = data["basketqty"];
+            object_to_remove.innerHTML = "";
+            subprice.innerHTML = item_subprice;
+            total_qty.innerHTML = basketqty
+                };
+
+        xhr.open("POST", "{% url 'basket:delete' %}");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xhr.send(`productid=${productid}&csrfmiddlewaretoken={{csrf_token}}`)
+    });
+    }
+
+
+    </script>
 {% endblock %}

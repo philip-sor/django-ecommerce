@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import JsonResponse, response
+from django.shortcuts import render
+from django.http import JsonResponse
 
 from .basket import Basket
-from core.models import Product
+from shop.models import Product
 
-# from ecommerce.core.models import Product
+# from ecommerce.shop.models import Product
 # Create your views here.
 
 
@@ -25,3 +25,25 @@ def basket_add(request):
         basketqty = basket.__len__()
         return JsonResponse({'qty': basketqty})
 
+
+def basket_update(request):
+    basket = Basket(request)
+    if request.method == 'POST':
+        product_id = request.POST.get('productid')
+        qty = request.POST.get('qty')
+        basket.update(product_id=product_id, qty=qty)
+
+        subtotal = basket.get_total_price()
+        basketqty = basket.__len__()
+        return JsonResponse({'subtotal': subtotal, 'basketqty': basketqty})
+
+
+def basket_delete(request):
+    basket = Basket(request)
+    if request.method == "POST":
+        product_id = request.POST.get('productid')
+        product = Product.objects.get(id=product_id)
+        basket.basket_delete(product)
+        subtotal = basket.get_total_price()
+        basketqty = basket.__len__()
+        return JsonResponse({'subtotal': subtotal, 'basketqty': basketqty})
