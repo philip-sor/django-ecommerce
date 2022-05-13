@@ -1,4 +1,6 @@
 import uuid
+
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -24,7 +26,7 @@ class Product(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=5, decimal_places=2)
     in_stock = models.BooleanField(default=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/', default='products/default.jpg')
     id = models.UUIDField(default=uuid.uuid4, primary_key=True)
     slug = models.SlugField(max_length=120, unique=True)
