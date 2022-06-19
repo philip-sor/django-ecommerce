@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -10,6 +11,7 @@ from django.utils.encoding import force_bytes, force_str
 from .forms import RegistrationForm
 from .models import CustomAccount
 from .tokens import account_activation_token
+from orders.models import Order
 # Create your views here.
 
 
@@ -80,10 +82,15 @@ def account_activate(request, uid64, token):
         return render(request, 'templates/accounts/register/activation_invalid.html')
 
 
+@login_required(redirect_field_name='accounts:login')
+def dashboard(request):
+    return render(request, 'templates/accounts/dashboard.html')
 
-# def logout_account(request):
-#     if not request.user.is_authenticated:
-#         return redirect('/')
-#
-#
-#     return render(request, 'templates/accounts/_logout.html')
+
+@login_required(redirect_field_name='accounts:login')
+def show_orders(request):
+    user = request.user
+    orders = Order.objects.filter(customer=user)
+    context = {'orders': orders}
+    return render(request, 'templates/accounts/orders.html', context)
+

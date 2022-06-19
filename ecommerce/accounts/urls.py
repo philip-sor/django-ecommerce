@@ -9,5 +9,9 @@ urlpatterns = [
     path('login/', views.login_account, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/accounts/login'), name='logout'),
 
-    path('activate/<slug:uid64>/<slug:token>', views.account_activate, name='activate')
+    path('activate/<slug:uid64>/<slug:token>', views.account_activate, name='activate'),
+
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/orders', views.show_orders, name='show-orders'),
+
 ]

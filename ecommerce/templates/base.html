@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>{% block title %}ecommerce{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="script" href="">
+    <link rel="stylesheet" href="{% block stylesheet %}{% endblock %}">
+    <link rel="script" href="{% block script %}{% endblock %}">
 
 </head>
 <body>
