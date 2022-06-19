@@ -7,10 +7,14 @@
 
 </head>
 <body>
+    <div class="upperLine">
+        <div class="homeAllbtn">
 <h1><a href="{% url 'shop:home' %}">Home</a></h1>
-<p><a href="{% url 'shop:all' %}">All</a></p>
-<div id="basket-summary"><p><a href="{% url 'basket:basket_summary' %}">Basket</a>
-    <p> total: <div id="total-qty">{% with total_qty=basket|length %}
+<h1><a href="{% url 'shop:all' %}">All</a></h1>
+        </div>
+<div class="basketwish">
+<div id="basket-summary"><h1><a href="{% url 'basket:basket_summary' %}">Basket</a></h1>
+    <!-- <h4> total: <div id="total-qty">{% with total_qty=basket|length %}
     {% if total_qty > 0 %}
     {{basket|length}}
     {% else %}
@@ -18,10 +22,10 @@
     {% endif %}
     {% endwith %}
     </div>
-    </p></div>
-
-<div id="wishlist-summary"><p><a href="{% url 'wishlist:wishlist_summary' %}">Wishlist</a>
-    <p> wishlist total: <div id="total-qty-wishlist">{% with total_qty=wishlist|length %}
+</h4> -->
+</div>
+<div id="wishlist-summary"><h1><a href="{% url 'wishlist:wishlist_summary' %}">Wishlist</a>
+    <!--<p> wishlist total: <div id="total-qty-wishlist">{% with total_qty=wishlist|length %}
     {% if total_qty > 0 %}
     {{wishlist|length}}
     {% else %}
@@ -29,8 +33,10 @@
     {% endif %}
     {% endwith %}
     </div>
-    </p></div>
-
+    </p></div> -->
+    </div>
+</div>
+</div>
 {% if user.is_authenticated %}
 <a href="{% url 'accounts:logout' %}">logout</a>
 {% else %}
