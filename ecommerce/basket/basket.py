@@ -5,9 +5,9 @@ from decimal import Decimal
 class Basket:
     def __init__(self, request):
         self.session = request.session
-        basket = self.session.get('skey')
-        if 'skey' not in request.session:
-            basket = self.session['skey'] = {}
+        basket = self.session.get('basket')
+        if 'basket' not in request.session:
+            basket = self.session['basket'] = {}
         self.basket = basket
 
     def add(self, product, qty):
@@ -46,4 +46,23 @@ class Basket:
             self.session.modified = True
 
     def get_total_price(self):
+        delivery_price = 0
+        if 'payment' in self.session:
+            delivery_price = self.session['payment']['delivery_price']
+        return sum(Decimal(item['qty']) * Decimal(item['price']) for item in self.basket.values()) \
+               + Decimal(delivery_price)
+
+    def get_subtotal_price(self):
         return sum(Decimal(item['qty']) * Decimal(item['price']) for item in self.basket.values())
+
+    def get_delivery_price(self):
+        if 'payment' in self.session:
+            return self.session['payment']['delivery_price']
+        else:
+            return 0
+
+    def get_address(self):
+        if 'address' in self.session:
+            return self.session['address']
+        else:
+            return None

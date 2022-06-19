@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     'shop',
     'basket',
     'accounts',
+    'wishlist',
+    'payments',
+    'orders',
 
 ]
 
@@ -70,7 +73,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'basket.context_processors.basket',
-                
+                'wishlist.context_processors.wishlist',
+
             ],
         },
     },
@@ -91,9 +95,9 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'YOUR DB NAME',
+#         'NAME': 'ecommerce',
 #         'USER': 'postgres',
-#         'PASSWORD': 'YOUR PASSWORD',
+#         'PASSWORD': '',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }

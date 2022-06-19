@@ -3,11 +3,14 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
+from django.core.mail import send_mail
+
+
 # Create your models here.
 
 
 class CustomAccountManager(UserManager):
-    def _create_user(self, username, email, password, **extra_fields):
+    def create_user(self, username, email=None, password=None, **extra_fields):
         if not email:
             raise ValueError(_('Email must be provided'))
         email = self.normalize_email(email)
@@ -56,3 +59,19 @@ class CustomAccount(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    def email_user(self, subject, message):
+        import smtplib
+        project_email = ""
+        project_password = ""
+        with smtplib.SMTP('smtp.gmail.com', 587) as connection:
+            connection.starttls()
+            connection.login(user=project_email, password=project_password)
+            connection.sendmail(project_email, self.email, msg=f"Subject:{subject}\n\n{message}")
+        # send_mail(subject=subject,
+        #           message=message,
+        #           from_email='yourslaveyourbitc4@gmail.com',
+        #           recipient_list=[self.email, ],
+        #           auth_user='yourslaveyourbitc4@gmail.com',
+        #           auth_password='abcd1234()',
+        #           fail_silently=False)

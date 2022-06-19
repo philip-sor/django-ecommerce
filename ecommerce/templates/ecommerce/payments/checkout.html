@@ -1,0 +1,63 @@
+{% extends 'templates/base.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<h5>Please check the information you provided below. <a href="">Change delivery</a> <a href="">Change information</a> </h5>
+{% if basket.get_address is not None %}
+{% for key, value in basket.get_address.items %}
+<p> {{ key }}: {{ value }} </p>
+{% endfor %}
+{% endif %}
+
+
+
+<p>Your delivery price: {{ basket.get_delivery_price }}</p>
+<!-- Replace "test" with your own sandbox Business account app client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AWPXqTwYrPwxDqQ_JMYTMeDlkDL7XmCnpiSWnNe-gIluk7O8T423_Q0LLKEDO-FczfzZIh4wEYJWbKhU&currency=USD"></script>
+    <!-- Set up a container element for the button -->
+
+    <div id="paypal-button-container"></div>
+    <script>
+      function initPayPalButton() {
+    paypal.Buttons({
+      style: {
+        shape: 'rect',
+        color: 'gold',
+        layout: 'vertical',
+        label: 'paypal',
+
+      },
+    createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            "amount": {
+              "currency_code": "USD",
+              "value": '{{basket.get_total_price}}'
+            }
+          }]
+        });
+      },
+    onApprove: function (data) {
+        var url = "{% url 'payments:payment_complete' %}"
+        return fetch(url, {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+            'X-CSRFToken': '{{csrf_token}}',
+          },
+          body: JSON.stringify({
+            orderID: data.orderID
+          })
+        }).then(function () {
+          location.href = '{% url 'payments:payment_successful' %}';
+        })
+      },
+    }).render('#paypal-button-container');
+  }
+  initPayPalButton();
+    </script>
+
+{% endblock %}
+
+

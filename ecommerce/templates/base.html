@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}ecommerce{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
 </head>
 <body>
 <h1><a href="{% url 'shop:home' %}">Home</a></h1>
@@ -18,9 +19,34 @@
     {% endwith %}
     </div>
     </p></div>
+
+<div id="wishlist-summary"><p><a href="{% url 'wishlist:wishlist_summary' %}">Wishlist</a>
+    <p> wishlist total: <div id="total-qty-wishlist">{% with total_qty=wishlist|length %}
+    {% if total_qty > 0 %}
+    {{wishlist|length}}
+    {% else %}
+    0
+    {% endif %}
+    {% endwith %}
+    </div>
+    </p></div>
+
+{% if user.is_authenticated %}
+<a href="{% url 'accounts:logout' %}">logout</a>
+{% else %}
+<p>Don't have an account?</p>
+<a href="{% url 'accounts:register' %}">register</a>
+<p>Already have an account?</p>
+<a href="{% url 'accounts:login' %}">login</a>
+{% endif %}
+
+
 {% block content %}
 
 
 {% endblock %}
+{% if user.is_authenticated %}
+{{ user.email }}
+{% endif %}
 </body>
 </html>

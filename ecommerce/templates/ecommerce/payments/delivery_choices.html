@@ -1,0 +1,59 @@
+{% extends 'templates/base.html' %}
+
+{% block title %}
+Basket
+{% endblock %}
+
+{% block content %}
+<h4>Basket</h4>
+
+<div class="wrapper">
+  <div class="store">
+    <div class="storeItem">
+      {% for delivery in delivery_options %}
+        <h5>{{delivery.delivery_name}}</h5>
+        <p>Timeframe: {{delivery.delivery_timeframe}}</p>
+        <p>Time window: {{delivery.delivery_window}}</p>
+        <p>Method: {{delivery.delivery_method}}</p>
+        <p>Price: {{delivery.delivery_price}}</p>
+        <input class="delivery-option" type="radio" name="delivery-option" value="{{delivery.id}}">
+        <hr>
+      {% endfor %}
+        <p>Subtotal: <div class="delivery-subprice">{{ basket.get_subtotal_price }}</div></p>
+        <p>Delivery price: <div id="delivery-price">{{ basket.get_delivery_price }}</div></p>
+      <p>Total price: <div id="delivery-total-price">{{ basket.get_total_price }}</div></p>
+
+</div>
+</div>
+</div>
+
+<script>
+  let delivery_options = document.getElementsByClassName('delivery-option');
+  console.log(delivery_options);
+  for (var i = 0; i < delivery_options.length; i++) {
+  let deliveryid = delivery_options[i].value;
+  delivery_options[i].addEventListener("change", function(e) {
+  e.preventDefault();
+  var xhr = new XMLHttpRequest();
+        xhr.onload = function(response) {
+            var delivery_price_elem = document.getElementById("delivery-price");
+            var total_price_elem = document.getElementById("delivery-total-price");
+            console.log(response);
+            console.log(response.srcElement.response);
+            let data = JSON.parse(response.srcElement.response);
+
+            let total_price = data["total_price"];
+            let delivery_price = data["delivery_price"];
+            total_price_elem.innerHTML = total_price;
+            delivery_price_elem.innerHTML = delivery_price;
+                };
+
+        xhr.open("POST", "{% url 'payments:update_delivery'%}");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xhr.send(`deliveryid=${deliveryid}&csrfmiddlewaretoken={{csrf_token}}`)
+  })
+  }
+
+
+</script>
+{% endblock %}

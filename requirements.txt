@@ -1,0 +1,5 @@
+Django
+six
+Pillow
+django_countries
+coverage

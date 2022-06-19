@@ -1,0 +1,56 @@
+{% extends 'templates/base.html' %}
+
+{% block title %}Wishlist{% endblock %}
+
+{% block content %}
+<h4>Wishlist</h4>
+
+<div class="wrapper">
+  <div class="store">
+    <div class="storeItem">
+      {% for item in wishlist %}
+          {% with product=item.product %}
+      <div class="itemInfo" id="item-wishlist{{product.id}}">
+        <p><a href="{{ product.get_absolute_url }}">{{product.name}}</a></p>
+          <button type="button" class="delete-button-wishlist" value="{{ product.id }}">delete</button>
+           <p>price: {{ item.price }}</p>
+        <a href="{{ product.get_absolute_url }}">
+          <img src="{{ product.image.url }}" width="200px" height="200px" style="border-radius: 20px">
+        </a>
+        <hr>
+
+</div>
+      {% endwith %}
+      {% endfor %}
+
+</div>
+</div>
+</div>
+<script>
+    let delete_buttons = document.getElementsByClassName('delete-button-wishlist');
+    console.log(delete_buttons);
+        for (var i = 0; i < delete_buttons.length; i++) {
+      let productid = delete_buttons[i].value;
+      delete_buttons[i].addEventListener("click", function(e){
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function(response) {
+            var total_qty_wishlist = document.getElementById("total-qty-wishlist");
+            var object_to_remove = document.getElementById("item-wishlist" + productid);
+            console.log(response);
+            console.log(response.srcElement.response);
+            let data = JSON.parse(response.srcElement.response);
+            let wishlistqty = data["wishlistqty"];
+            object_to_remove.innerHTML = "";
+            total_qty_wishlist.innerHTML = wishlistqty
+                };
+
+        xhr.open("POST", "{% url 'wishlist:delete' %}");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xhr.send(`productid=${productid}&csrfmiddlewaretoken={{csrf_token}}`)
+    });
+    }
+
+
+    </script>
+{% endblock %}

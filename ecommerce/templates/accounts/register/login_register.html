@@ -1,0 +1,23 @@
+{% extends 'templates/base.html' %}
+
+{% block content %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+
+{% if page == 'login' %}
+<form method="post" action="">
+    {% csrf_token %}
+    <input type="email" name="email">
+    <input type="password" name="password">
+    <input type="submit" value="login">
+</form>
+{% else %}
+<form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" >Submit</button>
+</form>
+{% endif %}
+
+{% endblock %}

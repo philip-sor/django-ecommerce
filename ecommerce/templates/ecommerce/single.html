@@ -12,6 +12,8 @@
 
 <button id="buy-button" type="button" value="{{product.id}}">Buy, qty: {{qty}}</button>
 <p id="basket"></p>
+<button id="wishlist-button" type="button" value="{{product.id}}">Add To Wishlist</button>
+
 <script>
     object = document.getElementById('buy-button');
     object.addEventListener('click', function(e){
@@ -29,6 +31,25 @@
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
         xhr.send('qty=1&productid={{product.id}}&csrfmiddlewaretoken={{csrf_token}}')
     })
+
+    object = document.getElementById('wishlist-button');
+    object.addEventListener('click', function(e){
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+
+        xhr.onload = function(response) {
+            const object_to_change = document.getElementById("total-qty-wishlist");
+            console.log(response)
+            data = JSON.parse(response.srcElement.response);
+
+            object_to_change.innerHTML = data['wishlistqty'];
+                };
+
+        xhr.open("POST", "{% url 'wishlist:add' %}");
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+        xhr.send('productid={{product.id}}&csrfmiddlewaretoken={{csrf_token}}')
+    })
+
 </script>
 {% endblock %}
 
