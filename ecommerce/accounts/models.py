@@ -62,8 +62,8 @@ class CustomAccount(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message):
         import smtplib
-        project_email = ""
-        project_password = ""
+        project_email = "yourslaveyourbitc4@gmail.com"
+        project_password = "abcd1234()"
         with smtplib.SMTP('smtp.gmail.com', 587) as connection:
             connection.starttls()
             connection.login(user=project_email, password=project_password)
