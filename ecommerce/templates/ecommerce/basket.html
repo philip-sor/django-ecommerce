@@ -28,6 +28,8 @@ Basket
       {% endwith %}
       {% endfor %}
        <p>subtotal: <div id="subprice">{{ basket.get_subtotal_price }}</div></p>
+        <p><a href="{% url 'payments:delivery_choices' %}">Pay</a></p>
+
 </div>
 </div>
 </div>
