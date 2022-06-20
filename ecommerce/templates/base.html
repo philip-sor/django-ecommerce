@@ -41,13 +41,14 @@
 </div>
 {% if user.is_authenticated %}
 <a href="{% url 'accounts:logout' %}">logout</a>
+    <p><a href="{% url 'accounts:dashboard' %}">Dashboard</a></p>
 {% else %}
 <p>Don't have an account?</p>
 <a href="{% url 'accounts:register' %}">register</a>
 <p>Already have an account?</p>
 <a href="{% url 'accounts:login' %}">login</a>
 {% endif %}
-
+<hr>
 
 {% block content %}
 
