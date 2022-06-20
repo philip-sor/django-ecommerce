@@ -26,7 +26,7 @@ p {
 .upperLine {
     background-color: #B92970;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     flex-direction: row;
     
 }
@@ -37,6 +37,7 @@ p {
     border-left: 1px solid #B92970;
     border-radius: 3px;
     transition: 1s;
+    
 }
 h4 {
     color:white;
@@ -44,6 +45,7 @@ h4 {
 
 .homeAllbtn {
     display: flex;
+    margin: 10px;
     
 }
 .homeAllbtn > h1 {
@@ -55,6 +57,7 @@ h4 {
 
 .basketwish {
     display: flex;
+    margin: 10px;
 }
 .basketwish h1 {
     margin-left: 10px;
@@ -64,4 +67,31 @@ h4 {
 
     border-left: 1px solid #161D28;
     transition: 1s;
+}
+
+.wrapper {
+    width: 90%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border-bottom: 1px solid #B92970;
+    border-top: 1px solid #B92970;
+    border-radius: 10px;
+    padding: 20px;
+}
+.product {
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 0.5px solid rgb(119, 255, 0);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+#logout {
+    background-color: white;
+    color: black;
+    padding: 10px;
+
+    border-radius: 2px;
 }

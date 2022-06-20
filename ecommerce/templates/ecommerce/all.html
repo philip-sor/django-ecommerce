@@ -4,7 +4,7 @@ All
 {% endblock  %}
 
 {% block content %}
-<div class="wrapper">
+<div class="product">
   <div class="store">
     <div class="storeItem">
       <div class="itemInfo">
@@ -13,7 +13,7 @@ All
         <a href="{{ product.get_absolute_url }}">
           <img src="{{ product.image.url }}" width="200px" height="200px" style="border-radius: 20px">
         </a>
-        <hr>
+
         {% endfor %}
 </div>
 </div>
