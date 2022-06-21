@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, ChangeAccountDetailsForm
 from .models import CustomAccount
 from .tokens import account_activation_token
 from orders.models import Order
@@ -39,6 +39,19 @@ def register_account(request):
             print(message)
             user.email_user(subject='Activate your account', message=message)
     return render(request, 'templates/accounts/register/login_register.html', context)
+
+
+@login_required(redirect_field_name='accounts:login')
+def change_account_details(request, username):
+    user = CustomAccount.objects.get(username=username)
+    form = ChangeAccountDetailsForm(instance=user)
+    context = {'form': form}
+    if request.method == 'POST':
+        form = ChangeAccountDetailsForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+        context['form'] = form
+    return render(request, 'templates/accounts/edit.html', context)
 
 
 def login_account(request):
