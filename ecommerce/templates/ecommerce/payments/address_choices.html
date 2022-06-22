@@ -8,7 +8,7 @@
     {% csrf_token %}
     {{form.as_p}}
 
-    <input type="submit" value="submit">
+    <input type="submit" value="Press this button to save the data">
 </form>
-
+<p><a href="{% url 'payments:checkout' %}">Proceed to Checkout</a></p>
 {% endblock %}

@@ -64,6 +64,11 @@ def address_choices(request):
 
 
 def checkout(request):
+    session = request.session
+    if 'payment' not in session:
+        return redirect('payments:delivery_choices')
+    if 'address' not in session:
+        return redirect('payments:address_choices')
     context = {}
     return render(request, 'templates/ecommerce/payments/checkout.html', context)
 

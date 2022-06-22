@@ -3,13 +3,15 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.decorators import login_required
 
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, ChangeAccountDetailsForm
 from .models import CustomAccount
 from .tokens import account_activation_token
+from orders.models import Order
 # Create your views here.
 
 
@@ -37,6 +39,19 @@ def register_account(request):
             print(message)
             user.email_user(subject='Activate your account', message=message)
     return render(request, 'templates/accounts/register/login_register.html', context)
+
+
+@login_required(redirect_field_name='accounts:login')
+def change_account_details(request, username):
+    user = CustomAccount.objects.get(username=username)
+    form = ChangeAccountDetailsForm(instance=user)
+    context = {'form': form}
+    if request.method == 'POST':
+        form = ChangeAccountDetailsForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+        context['form'] = form
+    return render(request, 'templates/accounts/edit.html', context)
 
 
 def login_account(request):
@@ -80,10 +95,15 @@ def account_activate(request, uid64, token):
         return render(request, 'templates/accounts/register/activation_invalid.html')
 
 
+@login_required(redirect_field_name='accounts:login')
+def dashboard(request):
+    return render(request, 'templates/accounts/dashboard.html')
 
-# def logout_account(request):
-#     if not request.user.is_authenticated:
-#         return redirect('/')
-#
-#
-#     return render(request, 'templates/accounts/_logout.html')
+
+@login_required(redirect_field_name='accounts:login')
+def show_orders(request):
+    user = request.user
+    orders = Order.objects.filter(customer=user)
+    context = {'orders': orders}
+    return render(request, 'templates/accounts/orders.html', context)
+

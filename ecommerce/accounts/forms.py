@@ -24,3 +24,11 @@ class RegistrationForm(forms.ModelForm):
         return cleaned_data.get("password2")
 
 
+class ChangeAccountDetailsForm(forms.ModelForm):
+    class Meta:
+        model = CustomAccount
+        fields = (
+            'first_name', 'last_name', 'country',
+            'phone_number', 'postcode', 'town_city',
+            'address', 'post_office_name',
+            'post_office_code', 'about')
