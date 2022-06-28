@@ -3,3 +3,4 @@ six
 Pillow
 django_countries
 coverage
+paypal-checkout-serversdk
