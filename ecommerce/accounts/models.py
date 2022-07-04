@@ -73,8 +73,8 @@ class CustomAccount(AbstractBaseUser, PermissionsMixin):
             connection.sendmail(project_email, self.email, msg=f"Subject:{subject}\n\n{message}")
         # send_mail(subject=subject,
         #           message=message,
-        #           from_email='yourslaveyourbitc4@gmail.com',
+        #           from_email='',
         #           recipient_list=[self.email, ],
-        #           auth_user='yourslaveyourbitc4@gmail.com',
-        #           auth_password='abcd1234()',
+        #           auth_user='',
+        #           auth_password='',
         #           fail_silently=False)
