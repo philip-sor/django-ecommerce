@@ -71,10 +71,4 @@ class CustomAccount(AbstractBaseUser, PermissionsMixin):
             connection.starttls()
             connection.login(user=project_email, password=project_password)
             connection.sendmail(project_email, self.email, msg=f"Subject:{subject}\n\n{message}")
-        # send_mail(subject=subject,
-        #           message=message,
-        #           from_email='yourslaveyourbitc4@gmail.com',
-        #           recipient_list=[self.email, ],
-        #           auth_user='yourslaveyourbitc4@gmail.com',
-        #           auth_password='abcd1234()',
-        #           fail_silently=False)
+ 
